@@ -7,25 +7,25 @@
     <div class="btn" @click="clear">AC</div>
     <div class="btn" @click="sign">+/-</div>
     <div class="btn" @click="percent">%</div>
-    <div class="btn operator">÷</div>
+    <div class="btn operator" @click="divide">÷</div>
 
     <!-- row two -->
     <div class="btn" @click="append('7')">7</div>
     <div class="btn" @click="append('8')">8</div>
     <div class="btn" @click="append('9')">9</div>
-    <div class="btn operator">x</div>
+    <div class="btn operator" @click="multi">x</div>
 
     <!-- row three -->
     <div class="btn" @click="append('4')">4</div>
     <div class="btn" @click="append('5')">5</div>
     <div class="btn" @click="append('6')">6</div>
-    <div class="btn operator">-</div>
+    <div class="btn operator" @click="minus">-</div>
 
     <!-- row four -->
     <div class="btn" @click="append('1')">1</div>
     <div class="btn" @click="append('2')">2</div>
     <div class="btn" @click="append('3')">3</div>
-    <div class="btn operator">+</div>
+    <div class="btn operator" @click="plus">+</div>
 
     <!-- row four -->
     <div class="btn zero" @click="append('0')">0</div>
@@ -39,7 +39,10 @@
 export default {
   data() {
     return {
+      previous: null,
       current: '',
+      operator: null,
+      operatorClicked: false
     }
   },
   methods: {
@@ -55,15 +58,38 @@ export default {
       this.current = `${parseFloat(this.current) / 100}`
     },
     append(number) {
+      if(this.operatorClicked) {
+        this.current = '';
+        this.operatorClicked = false;
+      }
       this.current = `${this.current}${number}`
     },
     dot() {
       if(this.current.indexOf('.') === -1) {
-        this.current = `${this.current}${'.'}`
-        // or you can use append function
-        // this.append('.');
+        this.append('.');
+        // this.current = `${this.current}${'.'}`
       }
-    }
+    },
+    setPrevious() {
+      this.previous = this.current;
+      this.operatorClicked = true;
+    },
+    divide() {
+      this.operator = (a, b) => a / b;
+      this.setPrevious();
+    },
+    multi() {
+      this.operator = (a, b) => a * b;
+      this.setPrevious();
+    },
+    minus() {
+      this.operator = (a, b) => a - b;
+      this.setPrevious();
+    },
+    plus() {
+      this.operator = (a, b) => a + b;
+      this.setPrevious();
+    },
   },
 }
 </script>
