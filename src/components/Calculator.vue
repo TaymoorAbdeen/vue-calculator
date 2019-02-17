@@ -30,7 +30,7 @@
     <!-- row four -->
     <div class="btn zero" @click="append('0')">0</div>
     <div class="btn" @click="dot">.</div>
-    <div class="btn operator">=</div>
+    <div class="btn operator" @click="equal">=</div>
 
   </div>
 </template>
@@ -90,6 +90,13 @@ export default {
       this.operator = (a, b) => a + b;
       this.setPrevious();
     },
+    equal() {
+      this.current = `${this.operator(
+        parseFloat(this.current),
+        parseFloat(this.previous)
+      )}`;
+      this.previous = false;
+    }
   },
 }
 </script>
